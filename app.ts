@@ -1,5 +1,5 @@
 ///////////////////////PRIMITIVE TYPES///////////////////////
-// they basic data types that represent a single value
+// they are basic data types that represent a single value
 // number, string, boolean, bigint, symbol, null, undefined
 /* null is used when we do not expect the value to be defined (TS will never check its type)
 whereas undefined is used when to declare a var which we do not know the type yet*/
@@ -76,7 +76,7 @@ enum Direction {
   Up = "Up",
   Down = "Down",
   Left = "Left",
-  Rigth = "Right",
+  Right = "Right",
 }
 
 enum Description {
@@ -105,8 +105,31 @@ if (typeof s == "number") {
 }
 
 ///////////////////////TYPE CAST///////////////////////
+/* you cast a type to a var, you tell the compiler what it should be treated as
+but you have to make sure to use an appropriate type, best to use an if else first*/
 
-///////////////////////OPTIONAL CHAINING & BANG///////////////////////
+let q: unknown = 1;
+const result = (q as number) + 1;
+// const result = (q as number[][])[0][1] // runtime error for wrong type
+
+///////////////////////OPTIONAL CHAINING///////////////////////
+/* ? & ! operators allow us to deal with undefined values */
+const arr6 = [{ name: "jerome" }, { name: "joe" }, { name: "jane" }];
+
+/* will check if it is undefined, and if not check the next type, here string
+ error without ? cause if it removes the very last element of the array then it would be undefined */
+const el = arr6.pop()?.name;
+
+const arr7 = [[{ name: "jerome" }]];
+const el2 = arr7.pop()?.pop()?.name;
+
+///////////////////////BANG///////////////////////
+/* ! will force the type that is not undefined, here string, 
+it's like saying to TS assume this is not undefined, this could be a problem
+cause if we don't have defined value, it would still try to define it as a tring thus crash
+the bang is usefull for forcing a specific type*/
+const arr8 = [[{ name: "jerome" }]];
+const el3 = arr8.pop()!.pop()!.name;
 
 ///////////////////////BASIC FUNCTION TYPES///////////////////////
 
