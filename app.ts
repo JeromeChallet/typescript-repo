@@ -132,6 +132,64 @@ const arr8 = [[{ name: "jerome" }]];
 const el3 = arr8.pop()!.pop()!.name;
 
 ///////////////////////BASIC FUNCTION TYPES///////////////////////
+/* functions also have implicit return values */
+// function add(x: number, y: number) : number | "invalid"
+function add(x: number, y: number) {
+  if (x == 0) {
+    return "invalid";
+  }
+  return x + y;
+}
+
+// ? makes the parameter optinal meaning it can be a string or undefined
+// is the paramater has a default value then it becomes optional middleName:string="middle"
+function makeName(firstName: string, lastName: string, middleName?: string) {
+  if (middleName) return firstName + " " + middleName + " " + lastName;
+  return firstName + " " + lastName;
+}
+
+const fullName = makeName("jerome", "challet");
+
+// to invoke a function as a parameter we define its type including its parameters
+function callFunc(
+  func: (f: string, l: string, m?: string) => string,
+  param1: string,
+  param2: string
+) {
+  func(param1, param2);
+}
+
+callFunc(makeName, "jerome", "challet");
+
+function mul(x: number, y: number): number {
+  return x + y;
+}
+
+function div(x: number, y: number): number {
+  return x / y;
+}
+
+// to pass in 2 functions or more you put them in funcs:()[]
+function applyFunc(
+  funcs: ((a: number, b: number) => number)[],
+  values: [number, number][]
+): number[] {
+  const results = [] as number[];
+  for (let i = 0; i < funcs.length; i++) {
+    const args = values[i];
+    const result = funcs[i](args[0], args[1]);
+    results.push(result);
+  }
+  return results;
+}
+
+applyFunc(
+  [mul, div],
+  [
+    [1, 2],
+    [2, 5],
+  ]
+);
 
 ///////////////////////ADVANCED FUNCTION TYPES///////////////////////
 
