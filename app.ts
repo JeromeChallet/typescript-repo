@@ -264,7 +264,91 @@ const manager: Manager = {
   employees: [],
 };
 
-///////////////////////CLASSES & ABSTRACT CLASSES///////////////////////
+// it can also be used for functions
+// we pretty much defines the arguments in the interface
+function getPerson(p: Person): Person {
+  return {
+    name: "jerome",
+    age: 23,
+  };
+}
+
+///////////////////////PRIVATE CLASSES///////////////////////
+/* public & private & protected are known as access modifier, privat means the property
+can only be accessed within its class preventing the internal state to be changed
+it is good practice to use the strictess modifier possible: public > protected > private*/
+class Person {
+  private name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  greet(): void {
+    console.log(`my name is ${this.name}`);
+  }
+  // to access that private parameter we can use a getter or setter method
+  getName(): string {
+    if (this.name.length < 2) return "";
+    return this.name;
+  }
+  setName(name: string): void {
+    if (name.length < 5) return;
+    this.name = name;
+  }
+}
+
+const p1 = new Person("jerome");
+console.log(p1.getName()); // works thanks to the getter getName
+//p1.name = "sam"; // error because of private
+
+///////////////////////PUBLIC CLASSES///////////////////////
+class Person2 {
+  public name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  greet(): void {
+    console.log(`my name is ${this.name}`);
+  }
+}
+
+const p2 = new Person("jerome");
+p2.name = "sam"; // works ok thanks to public
+
+///////////////////////PROTECTED CLASSES///////////////////////
+/* we can access the property from its own class or an inherited class*/
+class Person3 {
+  protected name: string;
+  constructor(name: string) {
+    this.name = name;
+    this.greet();
+  }
+  private greet(): void {
+    console.log(`my name is ${this.name}`);
+  }
+}
+
+class Employee2 extends Person3 {
+  callMe() {
+    console.log();
+    this.name;
+  }
+}
+
+const p3 = new Person3("jerome");
+//p3.name = "sam"; //  error because of protected
+
+///////////////////////ABSTRACT CLASSES///////////////////////
+/* not meant to be instanceciated but meant to be used as a based class 
+for some behavior of sub classes */
+abstract class Animal {
+  // any class that inherits from the abstract class must implement this method
+  abstract makeSound(duration: number): void;
+  move() {
+    console.log("moving along...");
+  }
+}
+
+//const animal = new Animal() // error cause Animal is abstract
 
 ///////////////////////CLASSES & INTERFACES///////////////////////
 
