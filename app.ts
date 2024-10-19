@@ -311,7 +311,7 @@ class Person2 {
   }
 }
 
-const p2 = new Person("jerome");
+const p2 = new Person2("jerome");
 p2.name = "sam"; // works ok thanks to public
 
 ///////////////////////PROTECTED CLASSES///////////////////////
