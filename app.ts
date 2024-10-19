@@ -142,7 +142,7 @@ function add(x: number, y: number) {
 }
 
 // ? makes the parameter optinal meaning it can be a string or undefined
-// is the paramater has a default value then it becomes optional middleName:string="middle"
+// if the paramater has a default value then it becomes optional middleName:string="middle"
 function makeName(firstName: string, lastName: string, middleName?: string) {
   if (middleName) return firstName + " " + middleName + " " + lastName;
   return firstName + " " + lastName;
@@ -277,7 +277,7 @@ function getPerson(p: Person): Person {
 /* public & private & protected are known as access modifier, privat means the property
 can only be accessed within its class preventing the internal state to be changed
 it is good practice to use the strictess modifier possible: public > protected > private*/
-class Person {
+class Person1 {
   private name: string;
   constructor(name: string) {
     this.name = name;
@@ -296,7 +296,7 @@ class Person {
   }
 }
 
-const p1 = new Person("jerome");
+const p1 = new Person1("jerome");
 console.log(p1.getName()); // works thanks to the getter getName
 //p1.name = "sam"; // error because of private
 
