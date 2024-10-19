@@ -192,8 +192,77 @@ applyFunc(
 );
 
 ///////////////////////ADVANCED FUNCTION TYPES///////////////////////
+// the rest parameter means you can take as many arguments as you want
+function sum(str: string, ...numbers: number[]) {}
+
+sum("hello", 1, 2, 3);
+sum("");
+sum("", 1, 2, 3, 1, 2, 3);
+
+/* an overloaded function has different call signature and can accept different types
+they are usefull for using the same function under different circumstances*/
+// first we define all the valid ways we can call the function
+function getItemLength(name: string): number;
+function getItemLength(names: string[]): string;
+// second we define a general function which can handle all the different type of inputs above
+function getItemLength(nameOrNames: unknown): unknown {
+  if (typeof nameOrNames === "string") {
+    return nameOrNames.length;
+  } else if (Array.isArray(nameOrNames)) {
+    return "array returned";
+  }
+  return 0;
+}
+// now when we call the function, TS will detect the correct overload (type to use)
+getItemLength(["", ""]);
+getItemLength("");
 
 ///////////////////////INTERFACES///////////////////////
+/* they enforce certain properties on objects it allows us to view any object as 
+a specific type. We define in it any properties that object of its type needs to declare*/
+interface Person {
+  name: string;
+  age: number;
+  height?: number;
+  hello?: () => void;
+}
+
+const person: Person = {
+  name: "jerome",
+  age: 38,
+  hello: function () {
+    console.log(this.name + " says hi");
+  },
+};
+
+// we make the method optional by using ?.
+// because TS expects the method to be potentially undefined you use ?.
+person.hello?.(); // jerome says hi
+
+// extending an interface is to inherit all the properties of the original one
+interface Employee extends Person {
+  employeeId: number;
+}
+
+const worker: Employee = {
+  name: "jerome",
+  age: 38,
+  height: 170,
+  employeeId: 10,
+};
+
+// we can extend from several interfaces
+interface Manager extends Employee, Person {
+  employees: Person[];
+}
+
+const manager: Manager = {
+  name: "jerome",
+  age: 38,
+  height: 170,
+  employeeId: 10,
+  employees: [],
+};
 
 ///////////////////////CLASSES & ABSTRACT CLASSES///////////////////////
 
