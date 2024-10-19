@@ -343,16 +343,109 @@ for some behavior of sub classes */
 abstract class Animal {
   // any class that inherits from the abstract class must implement this method
   abstract makeSound(duration: number): void;
-  move() {
+  move(duration: number) {
     console.log("moving along...");
+    this.makeSound(duration);
   }
 }
 
 //const animal = new Animal() // error cause Animal is abstract
 
+class Dog extends Animal {
+  // the method call must have the same call signature as the abstract method of its abstract class
+  makeSound(duration: number): void {
+    console.log("woof woof");
+  }
+}
+
+class Cat extends Animal {
+  // the method call must have the same call signature as the abstract method of its abstract class
+  makeSound(duration: number): void {
+    console.log("meow meow");
+  }
+}
+
+const dog = new Dog();
+dog.move(10);
+
 ///////////////////////CLASSES & INTERFACES///////////////////////
+/* classes is a blueprint to create objects and they can extend other classes for inheriting functionalities,
+intefaces can also be used on classes, they allow us to view a class through the lens of the interface
+You use an interface when there's no concretely defined functionalities while an abstract class does
+they allow us to trest different objects as if they were the same type*/
+
+interface Animal2 {
+  speak(): void;
+}
+
+class Dog2 implements Animal2 {
+  private name: string;
+  private color: string;
+
+  constructor(name: string, color: string) {
+    this.name = name;
+    this.color = color;
+  }
+  // the method must be public
+  speak() {
+    console.log(`I am ${this.name} and i am ${this.color}`);
+  }
+  // extra methods can be optional
+  test() {
+    return 1;
+  }
+}
+
+const dog2: Animal2 = new Dog2("jin", "brown");
+//dog.test() //  error cause dog2 is being viewed through the lens of Animal2
+
+class Cat2 implements Animal2 {
+  speak() {
+    console.log("meow");
+  }
+}
+
+const dog3 = new Dog2("medock", "brown");
+const cat = new Cat2();
+/* because both cat and dog implement the same Animal interface 
+we can view/treat them as if they were the same type Animal*/
+const animals: Animal2[] = [cat, dog3];
+animals[0].speak; // now i can only use the methods defined in Animal Interface
+
+// same as function makeSound(animal: Cat2 | Dog2 )
+function makeSound(animal: Animal2) {
+  animal.speak();
+}
+
+makeSound(cat);
 
 ///////////////////////STATIC ATTRIBUTES & METHODS///////////////////////
+/* they are var and methods that are associated with the class rather than the instances ofthe class
+usefull to deifne shared values all the instances of the class will have */
+class Dog3 {
+  // because of static, instanceCount is associated with the class itself
+  static instanceCount: number = 0;
+  // name is an intance attribute, meaning each object has different name
+  name: string;
+
+  constructor(name: string) {
+    // will track the number of instances of the Dog3 class
+    Dog3.instanceCount++;
+    this.name = name;
+  }
+
+  // we can also have static methods that can only access var that are assiociated with its class
+  static decreaseCount() {
+    // same as Dog3.instanceCount--;
+    this.instanceCount--;
+  }
+}
+const dog4 = new Dog3("jin");
+console.log(Dog3.instanceCount); // 1
+const dog5 = new Dog3("medock");
+console.log(Dog3.instanceCount); // 2
+Dog3.decreaseCount();
+console.log(Dog3.instanceCount); // 1
 
 ///////////////////////GENERICS///////////////////////
 
