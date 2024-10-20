@@ -191,7 +191,7 @@ applyFunc(
   ]
 );
 
-///////////////////////ADVANCED FUNCTION TYPES///////////////////////
+///////////////////////ADVANCED FUNCTION TYPE///////////////////////
 // the rest parameter means you can take as many arguments as you want
 function sum(str: string, ...numbers: number[]) {}
 
@@ -199,6 +199,7 @@ sum("hello", 1, 2, 3);
 sum("");
 sum("", 1, 2, 3, 1, 2, 3);
 
+///////////////////////OVERLOADED FUNCTIONS///////////////////////
 /* an overloaded function has different call signature and can accept different types
 they are usefull for using the same function under different circumstances*/
 // first we define all the valid ways we can call the function
@@ -265,7 +266,7 @@ const manager: Manager = {
 };
 
 // it can also be used for functions
-// we pretty much defines the arguments in the interface
+// we pretty much define the arguments in the interface
 function getPerson(p: Person): Person {
   return {
     name: "jerome",
@@ -274,7 +275,7 @@ function getPerson(p: Person): Person {
 }
 
 ///////////////////////PRIVATE CLASSES///////////////////////
-/* public & private & protected are known as access modifier, privat means the property
+/* public & private & protected are known as access modifier, private means the property
 can only be accessed within its class preventing the internal state to be changed
 it is good practice to use the strictess modifier possible: public > protected > private*/
 class Person1 {
@@ -338,7 +339,7 @@ const p3 = new Person3("jerome");
 //p3.name = "sam"; //  error because of protected
 
 ///////////////////////ABSTRACT CLASSES///////////////////////
-/* not meant to be instanceciated but meant to be used as a based class 
+/* not meant to be instanciated but meant to be used as a based class 
 for some behavior of sub classes */
 abstract class Animal {
   // any class that inherits from the abstract class must implement this method
@@ -369,10 +370,10 @@ const dog = new Dog();
 dog.move(10);
 
 ///////////////////////CLASSES & INTERFACES///////////////////////
-/* classes is a blueprint to create objects and they can extend other classes for inheriting functionalities,
+/* classes are a blueprint to create objects and they can extend other classes for inheriting functionalities,
 intefaces can also be used on classes, they allow us to view a class through the lens of the interface
-You use an interface when there's no concretely defined functionalities while an abstract class does
-they allow us to trest different objects as if they were the same type*/
+You use an interface when there's no concretely defined functionalities while an abstract class does.
+they allow us to treat different objects as if they were the same type*/
 
 interface Animal2 {
   speak(): void;
@@ -397,7 +398,7 @@ class Dog2 implements Animal2 {
 }
 
 const dog2: Animal2 = new Dog2("jin", "brown");
-//dog.test() //  error cause dog2 is being viewed through the lens of Animal2
+//dog2.test() //  error cause dog2 is being viewed through the lens of Animal2not Dog2
 
 class Cat2 implements Animal2 {
   speak() {
@@ -420,8 +421,8 @@ function makeSound(animal: Animal2) {
 makeSound(cat);
 
 ///////////////////////STATIC ATTRIBUTES & METHODS///////////////////////
-/* they are var and methods that are associated with the class rather than the instances ofthe class
-usefull to deifne shared values all the instances of the class will have */
+/* they are var and methods that are associated with the class rather than the instances of the class
+usefull to define shared values for all the instances of the class will have */
 class Dog3 {
   // because of static, instanceCount is associated with the class itself
   static instanceCount: number = 0;
@@ -433,7 +434,6 @@ class Dog3 {
     Dog3.instanceCount++;
     this.name = name;
   }
-
   // we can also have static methods that can only access var that are assiociated with its class
   static decreaseCount() {
     // same as Dog3.instanceCount--;
@@ -456,15 +456,12 @@ class DataStore<T> {
   addItem(item: T): void {
     this.items.push(item);
   }
-
   getItem(index: number): T {
     return this.items[index];
   }
-
   removeItem(index: number): void {
     this.items.splice(index, 1);
   }
-
   getAllItems(): T[] {
     return this.items;
   }
@@ -492,7 +489,8 @@ const n2: number = 2;
 getValue<string, number>("hello", n1, n2);
 
 ///////////////////////TYPE ALIASES///////////////////////
-/* allows to create custom types, we use to define something that isn't necessarily an object */
+/* allows to create custom types, 
+we use them to define something that isn't necessarily an object */
 type Coordinate = [number, number];
 
 function compareCoords(p1: Coordinate, p2: Coordinate): Coordinate {
@@ -500,8 +498,8 @@ function compareCoords(p1: Coordinate, p2: Coordinate): Coordinate {
 }
 
 // it can be easier to understand
-// same as const corrds: [number, number][] = [];
-const corrds: Coordinate[] = [];
+// same as const coords: [number, number][] = [];
+const coords: Coordinate[] = [];
 
 // you cannot implement type aliases to classes
 // class Dog implements Coordinate{} // error
@@ -584,8 +582,8 @@ class Fish {
   }
 }
 
-/* custom type guard function using 'is'. It returns wether or not the argument passed
-in the function is of a specfic type */
+/* custom type guard function using 'is'. 
+It returns whether or not the argument passed in the function is of a specfic type */
 function isHorse(animal: Horse | Fish): animal is Horse {
   // we check for some type of value, here a property lastName that only exists in one of the class here Horse
   return (animal as Horse).lastName !== undefined;
@@ -604,8 +602,8 @@ function getName(animal: Fish | Horse) {
 }
 
 ///////////////////////DISCRIMINATED UNIONS///////////////////////
-/* also known as tag type to perform type narrowing, it's a tag thats gonna be the same for all 
-3 interfaces but actually contain a value */
+/* also known as tag type to perform type narrowing, 
+it's a tag thats gonna be the same for all 3 interfaces but actually contain a value */
 type Log = Warning | Info | Success;
 
 interface Warning {
