@@ -640,7 +640,7 @@ function handleMsg(log: Log) {
 
 ///////////////////////UTILITY TYPES///////////////////////
 /* built in types allowing us to manipulate existing types in various ways
-there are 5 of them: Partial, Readonly, Record */
+there are 5 of them: Partial, Readonly, Record, Pick, Omit */
 
 interface Todo {
   title: string;
@@ -659,10 +659,33 @@ const myTodo: Readonly<Todo> = {
 // myTodo.title 'hello' // error
 
 // Record utility type defines a type with property names such as id and map the values to the type of the data
+// string is the key and Todo the value of the record
 const pages: Record<string, Todo> = {
   home: { title: "home", description: "description" },
   about: { title: "about", description: "description" },
   contact: { title: "contact", description: "description" },
+};
+const pageNumber: Record<number, Todo> = {
+  1: { title: "home", description: "description" },
+  2: { title: "about", description: "description" },
+  3: { title: "contact", description: "description" },
+};
+
+// Pick utility type creates new types by picking a set of properties from an existing type
+// we define which one we take between <>
+type TodoPreview = Pick<Todo, "title" | "description">;
+
+// normally we would have to include all the properties but only one is enough
+const todo: TodoPreview = {
+  title: "Clean room",
+  description: "description Clean room",
+};
+
+// Omit utitility type is the opposite of pick, it defines the properties we don't want to include
+type TodoPreview2 = Omit<Todo, "description">;
+
+const todo2: TodoPreview2 = {
+  title: "clean room",
 };
 
 ///////////////////////MODULES///////////////////////
