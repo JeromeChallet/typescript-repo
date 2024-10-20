@@ -25,3 +25,5 @@ npm init vite@latest projectName -- --template vanilla-ts
 When building the dist folder (distribution) contains all the ts code converted to js
 
 strict means the code cannot compile unless very strict conditions are met (package.json)
+
+modules are files of code to import or export that code
