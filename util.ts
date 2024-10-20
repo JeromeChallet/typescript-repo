@@ -1,14 +1,21 @@
-// named export is using export before the function name
+// default exports are not named and can be imported with any name you want
+function test() {
+  return "test";
+}
 
-function add(x: number, y: number): number {
+export const JEROME = 1;
+
+// named export is using export before the function name
+export function add(x: number, y: number): number {
   return x + y;
 }
 
-function sub(x: number, y: number): number {
+export function sub(x: number, y: number): number {
   return x - y;
 }
 
 // putting it a the bottom allows to do several export at once
-export { add, sub };
+//export { add, sub };
 
-// default exports are not named
+// it is convention to put the default export at the bottom and the regular export up
+export default test;
