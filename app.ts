@@ -448,16 +448,222 @@ Dog3.decreaseCount();
 console.log(Dog3.instanceCount); // 1
 
 ///////////////////////GENERICS///////////////////////
+/* allows to use a different type in classes based on the instance of the class,
+we use them by declaring a type <T>, with that we can use a class with any data type passed to it */
+class DataStore<T> {
+  private items: T[] = [];
+
+  addItem(item: T): void {
+    this.items.push(item);
+  }
+
+  getItem(index: number): T {
+    return this.items[index];
+  }
+
+  removeItem(index: number): void {
+    this.items.splice(index, 1);
+  }
+
+  getAllItems(): T[] {
+    return this.items;
+  }
+}
+
+interface User {
+  name: string;
+  id: number;
+}
+
+const data = new DataStore<string>();
+// we can use more than primitive types
+const data2 = new DataStore<User>();
+
+function getValue<K, V>(key: K, value1: V, value2: V): V {
+  if (key) {
+    return value1;
+  }
+  return value2;
+}
+
+// we dont need to explicitly define the types cause TS figure them out from the arguments
+const n1: number = 1;
+const n2: number = 2;
+getValue<string, number>("hello", n1, n2);
 
 ///////////////////////TYPE ALIASES///////////////////////
+/* allows to create custom types, we use to define something that isn't necessarily an object */
+type Coordinate = [number, number];
 
-///////////////////////UNION & INTERSECTION///////////////////////
+function compareCoords(p1: Coordinate, p2: Coordinate): Coordinate {
+  return [p1[0], p2[1]];
+}
+
+// it can be easier to understand
+// same as const corrds: [number, number][] = [];
+const corrds: Coordinate[] = [];
+
+// you cannot implement type aliases to classes
+// class Dog implements Coordinate{} // error
+
+///////////////////////UNION///////////////////////
+/* Unions allows to combine type aliases to create more complex types */
+type StringOrNumber = string | number | boolean;
+
+function acceptVal(val: StringOrNumber) {}
+
+///////////////////////INTERSECTION///////////////////////
+/* instead of making another interface that extend several interfaces we use an intersection */
+
+interface BusinessPartner {
+  name: string;
+}
+
+interface ContactDetails {
+  email: string;
+  phone: string;
+}
+
+type BusinessContact = BusinessPartner & ContactDetails;
+
+const contact: BusinessContact = {
+  name: "jerome",
+  email: "jajdjf",
+  phone: "",
+};
+
+interface Individual {
+  name: string;
+  birthday: Date;
+}
+
+interface Organization {
+  companyName: string;
+  workPhone: string;
+}
+
+// we can also use |
+type ContactType = Individual | Organization;
+type CompContact = Individual & Organization;
+
+function addContact(contact: ContactType) {
+  if ("birthday" in contact) {
+    console.log(contact.name, contact.birthday);
+  } else {
+    console.log(contact.companyName, contact.workPhone);
+  }
+}
 
 ///////////////////////TYPE GUARDS///////////////////////
+/* checks what type a value is before operating on it, like with typeof & instanceof & in,
+type narrowing with unions allows us to take a type that is more general*/
+
+type StringOrNumber2 = string | number;
+
+function add1(value: StringOrNumber2): StringOrNumber2 {
+  if (typeof value === "string") {
+    return value + "1";
+  } else {
+    return value + 1;
+  }
+}
+
+class Horse {
+  firstName: string;
+  lastName: string;
+  constructor(firstName: string, lastName: string) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+}
+
+class Fish {
+  firstName: string;
+  constructor(firstName: string, lastName: string) {
+    this.firstName = firstName;
+  }
+}
+
+/* custom type guard function using 'is'. It returns wether or not the argument passed
+in the function is of a specfic type */
+function isHorse(animal: Horse | Fish): animal is Horse {
+  // we check for some type of value, here a property lastName that only exists in one of the class here Horse
+  return (animal as Horse).lastName !== undefined;
+}
+
+function getName(animal: Fish | Horse) {
+  // we can also use
+  // if ('lastName' in animal)
+  // or if (isHorse(animal)) with the custom type guard function
+  // console.log("the name is", animal.firstName + " " + animal.lastName);
+  if (animal instanceof Fish) {
+    console.log("the name is", animal.firstName);
+  } else {
+    console.log("the name is", animal.firstName + " " + animal.lastName);
+  }
+}
 
 ///////////////////////DISCRIMINATED UNIONS///////////////////////
+/* also known as tag type to perform type narrowing, it's a tag thats gonna be the same for all 
+3 interfaces but actually contain a value */
+type Log = Warning | Info | Success;
+
+interface Warning {
+  // the type is the tag type
+  type: "warning";
+  msg: string;
+}
+
+interface Info {
+  type: "info";
+  text: string;
+}
+
+interface Success {
+  type: "success";
+  message: string;
+}
+
+function handleMsg(log: Log) {
+  switch (log.type) {
+    case "warning":
+      console.log(log.msg);
+      break;
+    case "info":
+      console.log(log.text);
+      break;
+    case "success":
+      console.log(log.message);
+      break;
+  }
+}
 
 ///////////////////////UTILITY TYPES///////////////////////
+/* built in types allowing us to manipulate existing types in various ways
+there are 5 of them: Partial, Readonly, Record */
+
+interface Todo {
+  title: string;
+  description: string;
+}
+
+// Partial utility type takes an existing type and makes all its properties optional
+const updateTodo = (todo: Partial<Todo>) => {};
+
+// Readonly utility type creates a new type where all properties are read only,
+// you can access them but not change them
+const myTodo: Readonly<Todo> = {
+  title: "learn TS",
+  description: "learn TS",
+};
+// myTodo.title 'hello' // error
+
+// Record utility type defines a type with property names such as id and map the values to the type of the data
+const pages: Record<string, Todo> = {
+  home: { title: "home", description: "description" },
+  about: { title: "about", description: "description" },
+  contact: { title: "contact", description: "description" },
+};
 
 ///////////////////////MODULES///////////////////////
 
